@@ -66,18 +66,13 @@
   }
 }
 
-/* Remove all @apply directives that use custom utility classes */
-
-/* Add these utility classes explicitly */
-.bg-background {
-  background-color: hsl(var(--background));
-}
-
-.text-foreground {
-  color: hsl(var(--foreground));
-}
-
-.border-border {
-  border-color: hsl(var(--border));
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 }
 
