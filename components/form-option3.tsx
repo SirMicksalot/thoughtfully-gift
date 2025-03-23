@@ -53,6 +53,7 @@ type FormValues = z.infer<typeof formSchema>
 export default function FormOption3() {
   const [showResults, setShowResults] = useState(false)
   const [formData, setFormData] = useState<FormValues | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -74,9 +75,23 @@ export default function FormOption3() {
     },
   })
 
-  function onSubmit(values: FormValues) {
-    setFormData(values)
-    setShowResults(true)
+  async function onSubmit(values: FormValues) {
+    setIsSubmitting(true)
+    try {
+      // Log the form data being submitted
+      console.log("Form data being submitted:", values)
+
+      // Store the form data for the results component
+      setFormData(values)
+
+      // Show the results component
+      setShowResults(true)
+    } catch (error) {
+      console.error("Error submitting form:", error)
+      alert("There was an error submitting your form. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (showResults && formData) {
@@ -449,10 +464,11 @@ export default function FormOption3() {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={isSubmitting}
                   className="rounded-full px-8 py-6 gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
                 >
                   <Sparkles className="w-5 h-5" />
-                  Find Magical Gifts
+                  {isSubmitting ? "Finding Gifts..." : "Find Magical Gifts"}
                 </Button>
               </div>
             </form>
